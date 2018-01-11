@@ -4,10 +4,11 @@
   <body>
     <cast-media-player id="player"></cast-media-player>
     <style>
-      #player {
-          --theme-hue: 210;
-          --splash-image: url("my.png");
-      }
+    #player {
+    --theme-hue: 100;
+    --progress-color: rgb(0, 255, 0);
+    --splash-image: url('https://www.dogbreedinfo.com/images19/EnglishCockerSpanielsAJLeftTommieLacono.JPG');
+    }
     </style>
     <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js">
     </script>
@@ -63,7 +64,25 @@
   
       const myCastQueue = new MyCastQueue(); // create instance of queue Object
   
+      
+    
+      const context = cast.framework.CastReceiverContext.getInstance();
+      const playerManager = context.getPlayerManager();
+
+      playerManager.addEventListener(
+      cast.framework.events.EventType.PLAYER_LOAD_COMPLETE, () => {
+      const audioTracksManager = playerManager.getAudioTracksManager();
+
+      // Get all audio tracks
+      const tracks = audioTracksManager.getTracks();
+
+      // Choose the first audio track to be active by specifying its ID
+      audioTracksManager.setActiveById(tracks[0].trackId);
+      });
+
+      
       context.start({queue: myCastQueue, playbackConfig: playbackConfig});
+    
     </script>
   </body>
   </html>
