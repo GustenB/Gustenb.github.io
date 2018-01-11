@@ -24,6 +24,18 @@
             console.log(event);
         });
 
+        playerManager.addEventListener(
+    cast.framework.events.EventType.PLAYER_LOAD_COMPLETE, () => {
+      const audioTracksManager = playerManager.getAudioTracksManager();
+
+      // Get all audio tracks
+      const tracks = audioTracksManager.getTracks();
+
+      // Choose the first audio track to be active by specifying its ID
+      console.log("tracks[0].trackId"+tracks[0].trackId);
+      audioTracksManager.setActiveById(tracks[0].trackId);
+      });
+
       context.start();
 
     </script>
