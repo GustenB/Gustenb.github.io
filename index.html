@@ -24,17 +24,26 @@
             console.log(event);
         });
 
-        playerManager.addEventListener(
-    cast.framework.events.EventType.PLAYER_LOAD_COMPLETE, () => {
-      const audioTracksManager = playerManager.getAudioTracksManager();
+      playerManager.addEventListener(
+        cast.framework.events.EventType.PLAYER_LOAD_COMPLETE, () => {
+        const audioTracksManager = playerManager.getAudioTracksManager();
+        const textTracksManager = playerManager.getTextTracksManager();
 
-      // Get all audio tracks
-      const tracks = audioTracksManager.getTracks();
+        // Get all audio tracks
+        const audioTracks = audioTracksManager.getTracks();
 
-      // Choose the first audio track to be active by specifying its ID
-      console.log("tracks[0].trackId"+tracks[0].trackId);
-      audioTracksManager.setActiveById(tracks[0].trackId);
+        // Get all text tracks
+        const textTracks = textTracksManager.getTracks();
+
+        // Choose the first audio track to be active by specifying its ID
+        console.log("AUDIO TRACK tracks[0].trackId"+audioTracks[0].trackId);
+        audioTracksManager.setActiveById(audioTracks[0].trackId);
+
+        // Choose the first text track to be active by its ID
+        console.log("TEXT TRACK tracks[0].trackId"+textTracks[0].trackId);
+        textTracksManager.setActiveByIds([textTracks[0].trackId]);
       });
+
 
       context.start();
 
