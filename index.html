@@ -18,6 +18,12 @@
       const context = cast.framework.CastReceiverContext.getInstance();
       const playerManager = context.getPlayerManager();
 
+        // listen to all Core Events
+        playerManager.addEventListener(cast.framework.events.category.CORE,
+        event => {
+            console.log(event);
+        });
+
       context.start();
 
     </script>
