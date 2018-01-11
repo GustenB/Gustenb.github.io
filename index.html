@@ -6,14 +6,18 @@
       <style>
         #player {
             --theme-hue: 210;
-            --splash-image: url('https://www.dogbreedinfo.com/images19/EnglishCockerSpanielsAJLeftTommieLacono.JPG');
+            --splash-image: url('splash.JPG');
         }
       </style>
           <script type="text/javascript"
           src="//www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js">
     </script>
     <script>
-      cast.framework.CastReceiverContext.getInstance().start();
+
+      const context = cast.framework.CastReceiverContext.getInstance();
+      const playerManager = context.getPlayerManager();
+
+      context.start();
     </script>
   </body>
   </html>
