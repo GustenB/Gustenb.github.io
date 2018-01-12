@@ -44,8 +44,13 @@
         textTracksManager.setActiveByIds([textTracks[0].trackId]);
       });
 
+      const playbackConfig = new cast.framework.PlaybackConfig();
 
-      context.start();
+      // Sets the player to start playback as soon as there are five seconds of
+      // media contents buffered. Default is 10.
+      playbackConfig.autoResumeDuration = 5;
+
+      context.start({playbackConfig: playbackConfig});
 
     </script>
   </body>
