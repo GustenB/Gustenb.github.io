@@ -18,10 +18,10 @@
       const context = cast.framework.CastReceiverContext.getInstance();
       const playerManager = context.getPlayerManager();
 
-        // listen to all Core Events
-        playerManager.addEventListener(cast.framework.events.category.CORE,
+      // listen to all Core Events
+      playerManager.addEventListener(cast.framework.events.category.CORE,
         event => {
-            console.log(event);
+            console.log('EVENT: ' + event);
         });
 
       playerManager.addEventListener(
@@ -44,8 +44,84 @@
         textTracksManager.setActiveByIds([textTracks[0].trackId]);
       });
 
+      const DemoQueue = class extends cast.framework.QueueBase {
+        constructor() {
+        /** @private {} */
+        super();
+        YourServer.onSomeEvent = this.updateEntireQueue_;
+      }
 
-      context.start();
+      /**
+      * Initializes the queue.
+      * @param {!cast.framework.messages.LoadRequestData} loadRequestData
+      * @return {!cast.framework.messages.QueueData}
+      */
+      initialize(loadRequestData) {
+        // Put the first set of items into the queue
+        const items = this.nextItems();
+        const queueData =
+        loadRequestData.queueData || new cast.framework.messages.QueueData();
+        queueData.name = 'Your Playlist';
+        queueData.description = 'Your Playlist Description';
+        queueData.items = items;
+        return queueData;
+      }
+
+      /**
+      * Picks a set of items from remote server after the reference item id and
+      * return as the next items to be inserted into the queue. When
+      * referenceItemId is omitted, items are simply appended to the end of the
+      * queue.
+      * @param {number} referenceItemId
+      * @return {!Array<cast.framework.QueueItem>}
+      */
+    nextItems(referenceItemId) {
+      // Assume your media has a itemId and the media url
+      return this.constructQueueList_(YourServer.getNextMedias(referenceItemId));
+    }
+
+    /**
+      * Picks a set of items from remote server before the reference item id and
+      * return as the items to be inserted into the queue. When
+      * referenceItemId is omitted, items are simply appended to beginning of the
+      * queue.
+      * @param {number} referenceItemId
+      * @return {!Array<cast.framework.QueueItem>}
+      */
+    prevItems(referenceItemId) {
+      return this.constructQueueList_(YourServer.getPrevMedias(referenceItemId));
+    }
+
+    /**
+      * Constructs a list of QueueItems based on the media information containing
+      * the item id and the media url.
+      * @param {number} referenceItemId
+      * @return {!Array<cast.framework.QueueItem>}
+      */
+    constructQueueList_(medias) {
+      const items = [];
+      for (media of medias) {
+        const item = new cast.framework.messages.QueueItem(media.itemId);
+        item.media = new cast.framework.messages.MediaInformation();
+        item.media.contentId = media.url;
+        items.push(item);
+      }
+      return items;
+    }
+
+    /**
+      * Logs the currently playing item.
+      * @param {number} itemId The unique id for the item.
+      * @export
+      */
+    onCurrentItemIdChanged(itemId) {
+      console.log('We are now playing video ' + itemId);
+      YourServer.trackUsage(itemId);
+    }
+  };
+
+
+context.start({queue: new DemoQueue()});
 
     </script>
   </body>
