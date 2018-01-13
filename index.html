@@ -177,7 +177,9 @@
 
       };
 
-      context.start({playbackConfig: playbackConfig, queue: new DemoQueue()});
+      const myCastQueue = new DemoQueue();
+
+      context.start({playbackConfig: playbackConfig, queue: myCastQueue });
 
     </script>
   </body>
