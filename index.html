@@ -76,14 +76,15 @@
       playerManager.setMessageInterceptor(
         cast.framework.messages.MessageType.LOAD,
         request => {
-          console.log(request.media.contentId);
+          console.log('!!!Request.media.contentId!!!: '+request.media.contentId);
+          console.log('!!!Request.media.contentId!!!: '+request.media.contentUrl);
           return request;
         }
       );
       playerManager.setMessageInterceptor(
         cast.framework.messages.MessageType.QUEUE_LOAD,
         request => {
-          console.log('queue load', request.items);
+          console.log('QUEUE LOAD', request.items);
           return request;
         }
       );
