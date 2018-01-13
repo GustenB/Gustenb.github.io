@@ -32,6 +32,24 @@
             console.log("EVENT: "+event);
         });
 
+      // intercept the LOAD request to be able to read in a contentId and get data
+      playerManager.setMessageInterceptor(
+          cast.framework.messages.MessageType.LOAD, loadRequestData => {
+              if (loadRequestData.media && loadRequestData.media.contentId) {
+                  return thirdparty.getMediaById(loadRequestData.media.contentId)
+                  .then(media => {
+                    if (media) {
+                      loadRequestData.media.contentUrl = media.url;
+                      loadRequestData.media.contentType = media.contentType;
+                      loadRequestData.media.metadata = media.metadata;
+                    }
+                    return loadRequestData;
+                  });
+              }
+              return loadRequestData;
+          });
+
+
       playerManager.addEventListener(
         cast.framework.events.EventType.PLAYER_LOAD_COMPLETE, () => {
         const audioTracksManager = playerManager.getAudioTracksManager();
