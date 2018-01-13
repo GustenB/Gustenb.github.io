@@ -25,6 +25,7 @@
 
       const context = cast.framework.CastReceiverContext.getInstance();
       const playerManager = context.getPlayerManager();
+      const demoQueue = new DemoQueue();
 
         // listen to all Core Events
         playerManager.addEventListener(cast.framework.events.category.CORE,
@@ -118,7 +119,8 @@
 
         /** Inserts items to the queue. */
         onSomeEventTriggeringInsertionToQueue() {
-          const twoMoreUrls = ['http://url1', 'http://url2'];
+          const twoMoreUrls = ['https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/BigBuckBunny.m3u8',
+ 'https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/ElephantsDream.m3u8'];
           const items = [];
           for (const mediaUrl of twoMoreUrls) {
             const item = new cast.framework.QueueItem();
@@ -149,7 +151,7 @@
 
       };
 
-      context.start({playbackConfig: playbackConfig, queue: new DemoQueue()});
+      context.start({playbackConfig: playbackConfig, queue: demoQueue});
 
     </script>
   </body>
