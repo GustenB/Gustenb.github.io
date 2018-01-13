@@ -26,7 +26,7 @@
       const context = cast.framework.CastReceiverContext.getInstance();
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
-      // const myQueue = new DemoQueue();
+      const myQueue = new DemoQueue();
 
         // listen to all Core Events
         playerManager.addEventListener(cast.framework.events.category.CORE,
@@ -75,7 +75,7 @@
       playbackConfig.autoResumeDuration = 5;
 
       // Creates a simple queue with a combination of contents.
-      class DemoQueue extends cast.framework.QueueBase {
+      const DemoQueue = class extends cast.framework.QueueBase {
       constructor() {
         super();
 
@@ -143,23 +143,9 @@
           this.queueManager_.removeItems([2]);
         }
 
-        /** Get current item from the queue. */
-        getCurrentItemInQueue() {
-          const item = this.queueManager_.getCurrentItem();
-          return item;
-        }
-
-        /** Get current item from the queue. */
-        getNrOfItemsInQueue() {
-          const items = this.queueManager_.getItems();
-          return items.length;
-        }
-        
-
       };
 
-      // context.start({playbackConfig: playbackConfig, queue: new DemoQueue()});
-      context.start({playbackConfig: playbackConfig});
+      context.start({playbackConfig: playbackConfig, queue: new DemoQueue()});
 
     </script>
   </body>
