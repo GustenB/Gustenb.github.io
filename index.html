@@ -26,15 +26,12 @@
       const context = cast.framework.CastReceiverContext.getInstance();
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
-      const myQueue = new DemoQueue();
+      // const myQueue = new DemoQueue();
 
         // listen to all Core Events
         playerManager.addEventListener(cast.framework.events.category.CORE,
         event => {
             console.log("EVENT: "+event);
-            console.log("BEFORE Number of items in the queue: "+myQueue.getNrOfItemsInQueue);
-            console.log("Number of items in the queue: "+myQueue.onSomeEventTriggeringInsertionToQueue);
-            console.log("AFTER Number of items in the queue: "+myQueue.getNrOfItemsInQueue);
         });
 
         playerManager.setMessageInterceptor(
@@ -161,8 +158,8 @@
 
       };
 
-      // context.start({playbackConfig: playbackConfig, queue: new DemoQueue()});
-      context.start({playbackConfig: playbackConfig, queue: myQueue});
+      context.start({playbackConfig: playbackConfig, queue: new DemoQueue()});
+      // context.start({playbackConfig: playbackConfig, queue: myQueue});
 
     </script>
   </body>
