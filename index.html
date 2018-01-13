@@ -73,6 +73,35 @@
       // media contents buffered. Default is 10.
       playbackConfig.autoResumeDuration = 5;
 
+
+      // Support Load by contentId. It fetches media data by contentId and
+      // uses the contentUrl for the media URL.
+      playerManager.setMessageInterceptor(
+          cast.framework.messages.MessageType.LOAD, loadRequestData => {
+            if (loadRequestData.media && loadRequestData.media.contentId) {
+              return thirdparty.getMediaById(loadRequestData.media.contentId)
+                  .then(media => {
+                    if (media) {
+                      loadRequestData.media.contentUrl = media.url;
+                      console.log("MEDIA URL: "+loadRequestData.media.contentUrl);
+
+                      loadRequestData.media.contentId = media.id;
+                      console.log("MEDIA ID: "+loadRequestData.media.contentId);
+
+                      loadRequestData.media.contentType = media.contentType;
+                      console.log("MEDIA TYPE: "+loadRequestData.media.contentType);
+
+                      loadRequestData.media.metadata = media.metadata;
+                      console.log("MEDIA METADATA: "+loadRequestData.media.metadata);
+
+                    }
+                    return loadRequestData;
+                  });
+            }
+            return loadRequestData;
+          });
+
+
       // Creates a simple queue with a combination of contents.
       const DemoQueue = class extends cast.framework.QueueBase {
       constructor() {
