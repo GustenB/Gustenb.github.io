@@ -50,7 +50,50 @@
       // media contents buffered. Default is 10.
       playbackConfig.autoResumeDuration = 5;
 
-      context.start({playbackConfig: playbackConfig});
+      // Creates a simple queue with a combination of contents.
+      const DemoQueue = class extends cast.framework.QueueBase {
+      constructor() {
+        super();
+
+        /**
+          * List of media urls.
+          * @private @const {!Array<string>}
+          */
+        this.myMediaUrls_ = ['https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/DesigningForGoogleCast.m3u8',
+ 'https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/GoogleIO-2014-CastingToTheFuture.m3u8',
+ 'https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/GoogleIO-2014-MakingGoogleCastReadyAppsDiscoverable.m3u8',
+ 'https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/BigBuckBunny.m3u8',
+ 'https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/ElephantsDream.m3u8'];
+
+
+
+      }
+      /**
+        * Provide a list of items.
+        * @param {!cast.framework.messages.LoadRequestData} loadRequestData
+        * @return {!cast.framework.messages.QueueData}
+        */
+      initialize(loadRequestData) {
+        const items = [];
+        for (const mediaUrl of this.myMediaUrls_) {
+          const item = new cast.framework.messages.QueueItem();
+          item.media = new cast.framework.messages.MediaInformation();
+          item.media.contentId = mediaUrl;
+          items.push(item);
+        }
+        const queueData = loadRequestData.queueData || new cast.framework.messages.QueueData();
+        queueData.name = 'Your Queue Name';
+        queueData.description = 'Your Queue Description';
+        queueData.items = items;
+        // Start with the first item in the playlist.
+        queueData.startIndex = 0;
+        // Start from 10 seconds into the first item.
+        queueData.currentTime = 10;
+        return queueData;
+        }
+      };
+
+      context.start({playbackConfig: playbackConfig, queue: new DemoQueue()});
 
     </script>
   </body>
