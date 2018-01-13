@@ -141,6 +141,12 @@
           this.queueManager_.removeItems([2]);
         }
 
+        /** Get current item from the queue. */
+        onGetCurrentItemInQueue() {
+          const item = this.queueManager_.getCurrentItem();
+          return item;
+        }
+
       };
 
       context.start({playbackConfig: playbackConfig, queue: new DemoQueue()});
