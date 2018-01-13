@@ -25,10 +25,58 @@
 
       const context = cast.framework.CastReceiverContext.getInstance();
       const playerManager = context.getPlayerManager();
+      // let demoQueue = new DemoQueue();
 
+        // listen to all Core Events
+        playerManager.addEventListener(cast.framework.events.category.CORE,
+        event => {
+            console.log("EVENT: "+event);
+        });
 
-       // Creates a simple queue with a combination of contents.
-       const DemoQueue = class extends cast.framework.QueueBase {
+        playerManager.setMessageInterceptor(
+          cast.framework.messages.MessageType.LOAD,
+          request => {
+            console.log('LOAD MESS REQUEST MEDIA CONTENTID: '+request.media.contentId);
+            return request;
+          }
+        );
+        playerManager.setMessageInterceptor(
+          cast.framework.messages.MessageType.QUEUE_LOAD,
+          request => {
+            console.log('QUEUE LOAD REQUEST ITEMS: ', request.items);
+            return request;
+          }
+        );
+
+      playerManager.addEventListener(
+        cast.framework.events.EventType.PLAYER_LOAD_COMPLETE, () => {
+        const audioTracksManager = playerManager.getAudioTracksManager();
+        const textTracksManager = playerManager.getTextTracksManager();
+
+        // Get all audio tracks
+        const audioTracks = audioTracksManager.getTracks();
+
+        // Get all text tracks
+        const textTracks = textTracksManager.getTracks();
+
+        // Choose the first audio track to be active by specifying its ID
+        console.log("AUDIO TRACK tracks[0].trackId"+audioTracks[0].trackId);
+        audioTracksManager.setActiveById(audioTracks[0].trackId);
+
+        // Choose the first text track to be active by its ID
+        console.log("TEXT TRACK tracks[0].trackId"+textTracks[0].trackId);
+        textTracksManager.setActiveByIds([textTracks[0].trackId]);
+      });
+
+      const playbackConfig = new cast.framework.PlaybackConfig();
+      const myQueue = new DemoQueue();
+
+      // Sets the player to start playback as soon as there are five seconds of
+      // media contents buffered. Default is 10.
+      playbackConfig.autoResumeDuration = 5;
+
+      // Creates a simple queue with a combination of contents.
+      const DemoQueue = class extends cast.framework.QueueBase {
       constructor() {
         super();
 
@@ -104,59 +152,7 @@
 
       };
 
-
-      let demoQueue = new DemoQueue();
-
-        // listen to all Core Events
-        playerManager.addEventListener(cast.framework.events.category.CORE,
-        event => {
-            console.log("EVENT: "+event);
-        });
-
-        playerManager.setMessageInterceptor(
-          cast.framework.messages.MessageType.LOAD,
-          request => {
-            console.log('LOAD MESS REQUEST MEDIA CONTENTID: '+request.media.contentId);
-            return request;
-          }
-        );
-        playerManager.setMessageInterceptor(
-          cast.framework.messages.MessageType.QUEUE_LOAD,
-          request => {
-            console.log('QUEUE LOAD REQUEST ITEMS: ', request.items);
-            return request;
-          }
-        );
-
-      playerManager.addEventListener(
-        cast.framework.events.EventType.PLAYER_LOAD_COMPLETE, () => {
-        const audioTracksManager = playerManager.getAudioTracksManager();
-        const textTracksManager = playerManager.getTextTracksManager();
-
-        // Get all audio tracks
-        const audioTracks = audioTracksManager.getTracks();
-
-        // Get all text tracks
-        const textTracks = textTracksManager.getTracks();
-
-        // Choose the first audio track to be active by specifying its ID
-        console.log("AUDIO TRACK tracks[0].trackId"+audioTracks[0].trackId);
-        audioTracksManager.setActiveById(audioTracks[0].trackId);
-
-        // Choose the first text track to be active by its ID
-        console.log("TEXT TRACK tracks[0].trackId"+textTracks[0].trackId);
-        textTracksManager.setActiveByIds([textTracks[0].trackId]);
-      });
-
-      const playbackConfig = new cast.framework.PlaybackConfig();
-
-      // Sets the player to start playback as soon as there are five seconds of
-      // media contents buffered. Default is 10.
-      playbackConfig.autoResumeDuration = 5;
-
-     
-
-      context.start({playbackConfig: playbackConfig, queue: demoQueue});
+      context.start({playbackConfig: playbackConfig, queue: myQueue});
 
     </script>
   </body>
