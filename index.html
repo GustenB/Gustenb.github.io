@@ -25,8 +25,7 @@
 
       const context = cast.framework.CastReceiverContext.getInstance();
       const playerManager = context.getPlayerManager();
-      const playbackConfig = new cast.framework.PlaybackConfig();
-      const myQueue = new DemoQueue();
+      // let demoQueue = new DemoQueue();
 
         // listen to all Core Events
         playerManager.addEventListener(cast.framework.events.category.CORE,
@@ -69,6 +68,8 @@
         textTracksManager.setActiveByIds([textTracks[0].trackId]);
       });
 
+      const playbackConfig = new cast.framework.PlaybackConfig();
+      const myQueue = new DemoQueue();
 
       // Sets the player to start playback as soon as there are five seconds of
       // media contents buffered. Default is 10.
