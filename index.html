@@ -144,10 +144,17 @@
         }
 
         /** Get current item from the queue. */
-        onGetCurrentItemInQueue() {
+        getCurrentItemInQueue() {
           const item = this.queueManager_.getCurrentItem();
           return item;
         }
+
+        /** Get current item from the queue. */
+        getNrOfItemsInQueue() {
+          const items = this.queueManager_.getItems();
+          return items.length;
+        }
+        
 
       };
 
