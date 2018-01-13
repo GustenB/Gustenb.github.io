@@ -25,7 +25,7 @@
 
       const context = cast.framework.CastReceiverContext.getInstance();
       const playerManager = context.getPlayerManager();
-      const demoQueue = new DemoQueue();
+      let demoQueue = new DemoQueue();
 
         // listen to all Core Events
         playerManager.addEventListener(cast.framework.events.category.CORE,
