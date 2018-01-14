@@ -22,7 +22,7 @@
           src="//www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js">
     </script>
     <script>
-      
+
       const context = cast.framework.CastReceiverContext.getInstance();
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
@@ -151,7 +151,11 @@
         const queueData = loadRequestData.queueData || new cast.framework.messages.QueueData();
         queueData.name = 'Your Queue Name';
         queueData.description = 'Your Queue Description';
-        queueData.items = items;
+        
+        
+        // queueData.items = items;
+        
+        
         // Start with the first item in the playlist.
         queueData.startIndex = 0;
         // Start from 10 seconds into the first item.
