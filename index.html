@@ -88,6 +88,28 @@
           return request;
         }
       );
+      playerManager.setMessageInterceptor(
+        cast.framework.messages.MessageType.QUEUE_INSERT,
+        request => {
+          console.log('QUEUE INSERT', request);
+          return request;
+        } 
+      );
+      playerManager.setMessageInterceptor(
+        cast.framework.messages.MessageType.QUEUE_UPDATE,
+        request => {
+          console.log('QUEUE UPDATE', request);
+          return request;
+        } 
+      );
+      playerManager.setMessageInterceptor(
+        cast.framework.messages.MessageType.QUEUE_CHANGE,
+        request => {
+          console.log('QUEUE CHANGE', request);
+          return request;
+        } 
+      );
+
 
       // Creates a simple queue with a combination of contents.
       const DemoQueue = class extends cast.framework.QueueBase {
