@@ -23,6 +23,8 @@
     </script>
     <script>
 
+      cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
+
       const context = cast.framework.CastReceiverContext.getInstance();
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
