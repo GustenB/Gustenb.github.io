@@ -200,6 +200,9 @@
         playbackConfig.licenseUrl = loadRequest.media.customData.licenseUrl;
         console.log('playbackConfig.licenseUrl: '+playbackConfig.licenseUrl);
       }
+      else {
+        console.log('playbackConfig.licenseUrl: NO LICENSE URL!!!!!');
+      }
       return playbackConfig;
 });
 
