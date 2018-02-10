@@ -169,6 +169,17 @@
         console.log('!!!customDataJSON.audioLanguage: '+customDataJSON.audioLanguage);
         console.log('!!!customDataJSON.subtitlesUrl: '+customDataJSON.subtitlesUrl);
 
+
+        const activeTracksids = loadRequestData.activeTrackIds;
+
+        const mediaLoaded = loadRequestData.media;
+        console.log('!!!textTrackStyle: '+mediaLoaded.textTrackStyle);
+        console.log('!!!tracks: '+mediaLoaded.tracks);
+        console.log('!!!streamType: '+mediaLoaded.streamType);
+        console.log('!!!contentUrl: '+mediaLoaded.contentUrl);
+        console.log('!!!contentId: '+mediaLoaded.contentId);
+        console.log('!!!contentType: '+mediaLoaded.contentType);
+
         const queueData = loadRequestData.queueData || new cast.framework.messages.QueueData();
         queueData.name = 'Your Queue Name';
         queueData.description = 'Your Queue Description';
