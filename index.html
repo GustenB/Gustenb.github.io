@@ -161,6 +161,11 @@
           item.media.contentId = mediaUrl;
           items.push(item);
         }
+
+        const customDataJSON = loadRequestData.customData;
+        console.log('!!!customDataJSON!!!: '+customDataJSON);
+
+
         const queueData = loadRequestData.queueData || new cast.framework.messages.QueueData();
         queueData.name = 'Your Queue Name';
         queueData.description = 'Your Queue Description';
@@ -204,6 +209,13 @@
 
       const myCastQueue = new DemoQueue();
       //myCastQueue.onSomeEventTriggeringInsertionToQueue();
+
+      const CUSTOM_CHANNEL = 'urn:x-cast:com.example.cast.mynamespace';
+      context.addCustomMessageListener(CUSTOM_CHANNEL, function(customEvent) {
+ 
+      });
+
+    
 
       context.start({playbackConfig: playbackConfig, queue: myCastQueue });
 
