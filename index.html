@@ -27,19 +27,6 @@
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
 
-      // Update playback config licenseUrl according to provided value in load request.
-      context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackConfig) => {
-        console.log('Update playback config licenseUrl according to provided value in load request.');
-      if (loadRequest.media.customData && loadRequest.media.customData.licenseUrl) {
-        playbackConfig.licenseUrl = loadRequest.media.customData.licenseUrl;
-        console.log('playbackConfig.licenseUrl: '+playbackConfig.licenseUrl);
-      }
-      else {
-        console.log('playbackConfig.licenseUrl: NO LICENSE URL!!!!!');
-      }
-      return playbackConfig;
-});
-
         // listen to all Core Events
         playerManager.addEventListener(cast.framework.events.category.CORE,
         event => {
@@ -171,6 +158,11 @@
         const drm = customDataJSON.entitlement.DRM;
         console.log('!!!DRM ContentId: '+drm.ContentId);
         console.log('!!!DRM Href: '+drm.Cookie.Href);
+
+        playbackConfig.licenseUrl = drm.Cookie.Href;
+        playbackConfig.licenseRequestHandler = requestInfo => {
+        requestInfo.withCredentials = true;
+        };
 
         const activeTracksids = loadRequestData.activeTrackIds;
 
