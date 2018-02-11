@@ -178,9 +178,7 @@
 
         const tracks = mediaLoaded.tracks;
 
-        tracks.forEach(track => {
-                console.log("track: "+track)
-            });
+        tracks.forEach(this.showTracksId);
 
         console.log('!!!mediaLoaded.streamType: '+mediaLoaded.streamType);
         console.log('!!!mediaLoaded.contentUrl: '+mediaLoaded.contentUrl);
@@ -202,7 +200,9 @@
         }
 
 
-
+        showTracksId = (index, trackId) => {
+          console.log("Tracks index: "+index + "+id: "+trackId);
+        }
 
         /** Inserts items to the queue. */
         onSomeEventTriggeringInsertionToQueue() {
