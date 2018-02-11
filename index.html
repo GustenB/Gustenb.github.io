@@ -168,8 +168,9 @@
         console.log('!!!customDataJSON.mediaSelfLink: '+customDataJSON.mediaSelfLink);
         console.log('!!!customDataJSON.audioLanguage: '+customDataJSON.audioLanguage);
         console.log('!!!customDataJSON.subtitlesUrl: '+customDataJSON.subtitlesUrl);
-        console.log('!!!customDataJSON.href: '+customDataJSON.href);
-
+        const drm = customDataJSON.entitlement.DRM;
+        console.log('!!!DRM ContentId: '+drm.ContentId);
+        console.log('!!!DRM Href: '+drm.Cookie.href);
 
         const activeTracksids = loadRequestData.activeTrackIds;
 
