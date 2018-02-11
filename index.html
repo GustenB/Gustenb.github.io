@@ -173,12 +173,19 @@
         const activeTracksids = loadRequestData.activeTrackIds;
 
         const mediaLoaded = loadRequestData.media;
-        console.log('!!!textTrackStyle: '+mediaLoaded.textTrackStyle);
-        console.log('!!!tracks: '+mediaLoaded.tracks);
-        console.log('!!!streamType: '+mediaLoaded.streamType);
-        console.log('!!!contentUrl: '+mediaLoaded.contentUrl);
-        console.log('!!!contentId: '+mediaLoaded.contentId);
-        console.log('!!!contentType: '+mediaLoaded.contentType);
+        console.log('!!!mediaLoaded.textTrackStyle: '+mediaLoaded.textTrackStyle);
+        console.log('!!!mediaLoaded.tracks: '+mediaLoaded.tracks);
+
+        const tracks = mediaLoaded.tracks;
+
+        tracks.forEach(track => {
+                console.log("track: "+track)
+            });
+
+        console.log('!!!mediaLoaded.streamType: '+mediaLoaded.streamType);
+        console.log('!!!mediaLoaded.contentUrl: '+mediaLoaded.contentUrl);
+        console.log('!!!mediaLoaded.contentId: '+mediaLoaded.contentId);
+        console.log('!!!mediaLoaded.contentType: '+mediaLoaded.contentType);
         console.log('!!!mediaLoaded.customdData: '+mediaLoaded.customdData);
 
         const queueData = loadRequestData.queueData || new cast.framework.messages.QueueData();
@@ -193,6 +200,9 @@
         queueData.currentTime = 10;
         return queueData;
         }
+
+
+
 
         /** Inserts items to the queue. */
         onSomeEventTriggeringInsertionToQueue() {
