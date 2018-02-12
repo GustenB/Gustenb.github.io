@@ -27,8 +27,23 @@
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
 
-      console.log("--- Initialize ---");  
-
+      console.log("--- Initialize ---");
+      
+      playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, loadRequestData => {
+      console.log("--- MessageInterceptor ---");
+      if (loadRequestData.media && loadRequestData.media.entity) {
+        return thirdparty.getMediaById(loadRequestData.media.entity, loadRequestData.credentials)
+        .then(media => {
+              if (media) {
+                loadRequestData.media.contentId = media.url;
+                loadRequestData.media.contentType = media.contentType;
+                loadRequestData.media.metadata = media.metadata;
+              }
+              return loadRequestData;
+            });
+        }
+      return loadRequestData;
+      });
 
       playbackConfig.licenseUrl = 'http://widevine/yourLicenseServer';
       playbackConfig.licenseRequestHandler = requestInfo => {
