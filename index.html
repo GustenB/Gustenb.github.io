@@ -27,7 +27,7 @@
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
 
-      console.log('Test 13');
+      console.log('Test 14');
 
       // Update playback config licenseUrl according to provided value in load request.
       context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackConfig) => {
@@ -175,17 +175,12 @@
         const activeTracksids = loadRequestData.activeTrackIds;
 
         const mediaLoaded = loadRequestData.media;
-        console.log('!!!mediaLoaded.textTrackStyle: '+mediaLoaded.textTrackStyle);
-        console.log('!!!mediaLoaded.tracks: '+mediaLoaded.tracks);
-
-        const tracks = mediaLoaded.tracks;
-
-        // tracks.forEach(this.showTracksId);
-
-        console.log('!!!mediaLoaded.streamType: '+mediaLoaded.streamType);
-        console.log('!!!mediaLoaded.contentUrl: '+mediaLoaded.contentUrl);
-        console.log('!!!mediaLoaded.contentId: '+mediaLoaded.contentId);
-        console.log('!!!mediaLoaded.contentType: '+mediaLoaded.contentType);
+        console.log('!!!textTrackStyle: '+mediaLoaded.textTrackStyle);
+        console.log('!!!tracks: '+mediaLoaded.tracks);
+        console.log('!!!streamType: '+mediaLoaded.streamType);
+        console.log('!!!contentUrl: '+mediaLoaded.contentUrl);
+        console.log('!!!contentId: '+mediaLoaded.contentId);
+        console.log('!!!contentType: '+mediaLoaded.contentType);
         console.log('!!!mediaLoaded.customdData: '+mediaLoaded.customdData);
 
         const queueData = loadRequestData.queueData || new cast.framework.messages.QueueData();
@@ -199,10 +194,6 @@
         // Start from 10 seconds into the first item.
         queueData.currentTime = 10;
         return queueData;
-        }
-
-        showTracksId = (index, trackId) => {
-          console.log("Tracks index: "+index + " id: "+trackId);
         }
 
         /** Inserts items to the queue. */
