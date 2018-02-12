@@ -34,6 +34,8 @@
                 return thirdparty.getMediaById(loadRequestData.media.contentId)
                 .then(media => {
                   if (media) {
+                    console.log("---- Media contentId: "+media.contentId);
+                    console.log("---- Media contentType: "+media.contentType);
                     loadRequestData.media.contentUrl = media.url;
                     loadRequestData.media.contentType = media.contentType;
                     loadRequestData.media.metadata = media.metadata;
