@@ -24,32 +24,39 @@
     <script>
 
       const context = cast.framework.CastReceiverContext.getInstance();
-      const player = context.getPlayerManager();
+      const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
 
-      player.setMessageInterceptor(
-        cast.framework.messages.MessageType.LOAD,
-        request => {
-          console.log("Load: "+request.media.contentId);
-          return request;
-        }
-      );
+      console.log("Test 1");
 
-      player.setMessageInterceptor(
-        cast.framework.messages.MessageType.QUEUE_LOAD,
-        request => {
-          console.log('queue load', request.items);
-          return request;
-        }
-      );
+      // intercept the LOAD request to be able to read in a contentId and get data
+      playerManager.setMessageInterceptor(
+      cast.framework.messages.MessageType.LOAD, loadRequestData => {
+      console.log("MessageInterceptor 1");
+      if (loadRequestData.media && loadRequestData.media.contentId) {
+          console.log("MessageInterceptor 2");
+          return thirdparty.getMediaById(loadRequestData.media.contentId)
+          .then(media => {
+            console.log("MessageInterceptor 3");
+            if (media) {
+              console.log("MessageInterceptor 4");
+              loadRequestData.media.contentUrl = media.url;
+              loadRequestData.media.contentType = media.contentType;
+              loadRequestData.media.metadata = media.metadata;
+            }
+            console.log("MessageInterceptor 5");
+            return loadRequestData;
+          });
+      }
+      console.log("MessageInterceptor 6");
+      return loadRequestData;
+      });
 
-      player.setMessageInterceptor(
-        cast.framework.messages.MessageType.MEDIA_STATUS,
-        status => {
-          status.customData = {};
-          return status;
-        }
-      );
+      // listen to all Core Events
+      playerManager.addEventListener(cast.framework.events.category.CORE,
+      event => {
+        console.log("Event: "+event);
+      });
       
       context.start();
 
