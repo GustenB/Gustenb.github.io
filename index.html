@@ -30,6 +30,7 @@
       // intercept the LOAD request to be able to read in a contentId and get data
       playerManager.setMessageInterceptor(
         cast.framework.messages.MessageType.LOAD, loadRequestData => {
+          console.log("---- MessageType.LOAD ----");
             if (loadRequestData.media && loadRequestData.media.contentId) {
                 return thirdparty.getMediaById(loadRequestData.media.contentId)
                 .then(media => {
