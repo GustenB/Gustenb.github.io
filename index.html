@@ -27,7 +27,20 @@
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
 
-      console.log("Test 12");
+      console.log('Test 13');
+
+      // Update playback config licenseUrl according to provided value in load request.
+      context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackConfig) => {
+        console.log('Update playback config licenseUrl according to provided value in load request.');
+      if (loadRequest.media.customData && loadRequest.media.customData.licenseUrl) {
+        playbackConfig.licenseUrl = loadRequest.media.customData.licenseUrl;
+        console.log('playbackConfig.licenseUrl: '+playbackConfig.licenseUrl);
+      }
+      else {
+        console.log('playbackConfig.licenseUrl: NO LICENSE URL!!!!!');
+      }
+      return playbackConfig;
+});
 
         // listen to all Core Events
         playerManager.addEventListener(cast.framework.events.category.CORE,
@@ -90,8 +103,29 @@
           return request;
         }
       );
-   
-
+      /*
+      playerManager.setMessageInterceptor(
+        cast.framework.messages.MessageType.QUEUE_INSERT,
+        request => {
+          console.log('QUEUE INSERT', request);
+          return request;
+        } 
+      );
+      playerManager.setMessageInterceptor(
+        cast.framework.messages.MessageType.QUEUE_UPDATE,
+        request => {
+          console.log('QUEUE UPDATE', request);
+          return request;
+        } 
+      );
+      playerManager.setMessageInterceptor(
+        cast.framework.messages.MessageType.QUEUE_CHANGE,
+        request => {
+          console.log('QUEUE CHANGE', request);
+          return request;
+        } 
+      );
+      */
 
 
       // Creates a simple queue with a combination of contents.
@@ -136,29 +170,6 @@
         console.log('!!!customDataJSON.mediaSelfLink: '+customDataJSON.mediaSelfLink);
         console.log('!!!customDataJSON.audioLanguage: '+customDataJSON.audioLanguage);
         console.log('!!!customDataJSON.subtitlesUrl: '+customDataJSON.subtitlesUrl);
-        const drm = customDataJSON.entitlement.DRM;
-        console.log('!!!DRM ContentId: '+drm.ContentId);
-        console.log('!!!DRM Href: '+drm.Cookie.Href);
-
-        playbackConfig.licenseUrl = drm.Cookie.Href;
-        playbackConfig.licenseRequestHandler = requestInfo => {
-        requestInfo.withCredentials = true;
-        };
-
-
-        // Update playback config licenseUrl according to provided value in load request.
-        context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackConfig) => {
-        //if (loadRequest.media.customData && loadRequest.media.customData.licenseUrl) {
-          playbackConfig.licenseUrl = drm.Cookie.Href;
-        // }
-        return playbackConfig;
-        });
-
-
-
-
-
-
 
 
         const activeTracksids = loadRequestData.activeTrackIds;
@@ -168,6 +179,8 @@
         console.log('!!!mediaLoaded.tracks: '+mediaLoaded.tracks);
 
         const tracks = mediaLoaded.tracks;
+
+        // tracks.forEach(this.showTracksId);
 
         console.log('!!!mediaLoaded.streamType: '+mediaLoaded.streamType);
         console.log('!!!mediaLoaded.contentUrl: '+mediaLoaded.contentUrl);
@@ -186,6 +199,10 @@
         // Start from 10 seconds into the first item.
         queueData.currentTime = 10;
         return queueData;
+        }
+
+        showTracksId = (index, trackId) => {
+          console.log("Tracks index: "+index + " id: "+trackId);
         }
 
         /** Inserts items to the queue. */
