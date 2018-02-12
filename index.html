@@ -26,8 +26,9 @@
       const context = cast.framework.CastReceiverContext.getInstance();
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
+      const loadRequestData = new LoadRequestData();
 
-      console.log("Test 1");
+      console.log("Test 3");
 
       // intercept the LOAD request to be able to read in a contentId and get data
       playerManager.setMessageInterceptor(
@@ -57,6 +58,8 @@
       event => {
         console.log("Event: "+event);
       });
+
+      
       
       context.start();
 
