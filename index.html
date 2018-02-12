@@ -27,6 +27,8 @@
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
 
+      console.log("Test 12");
+
         // listen to all Core Events
         playerManager.addEventListener(cast.framework.events.category.CORE,
         event => {
@@ -88,29 +90,8 @@
           return request;
         }
       );
-      /*
-      playerManager.setMessageInterceptor(
-        cast.framework.messages.MessageType.QUEUE_INSERT,
-        request => {
-          console.log('QUEUE INSERT', request);
-          return request;
-        } 
-      );
-      playerManager.setMessageInterceptor(
-        cast.framework.messages.MessageType.QUEUE_UPDATE,
-        request => {
-          console.log('QUEUE UPDATE', request);
-          return request;
-        } 
-      );
-      playerManager.setMessageInterceptor(
-        cast.framework.messages.MessageType.QUEUE_CHANGE,
-        request => {
-          console.log('QUEUE CHANGE', request);
-          return request;
-        } 
-      );
-      */
+   
+
 
 
       // Creates a simple queue with a combination of contents.
