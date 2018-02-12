@@ -27,225 +27,32 @@
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
 
-        // listen to all Core Events
-        playerManager.addEventListener(cast.framework.events.category.CORE,
+      // intercept the LOAD request to be able to read in a contentId and get data
+      playerManager.setMessageInterceptor(
+        cast.framework.messages.MessageType.LOAD, loadRequestData => {
+            if (loadRequestData.media && loadRequestData.media.contentId) {
+                return thirdparty.getMediaById(loadRequestData.media.contentId)
+                .then(media => {
+                  if (media) {
+                    loadRequestData.media.contentUrl = media.url;
+                    loadRequestData.media.contentType = media.contentType;
+                    loadRequestData.media.metadata = media.metadata;
+                  }
+                  return loadRequestData;
+                });
+            }
+            return loadRequestData;
+        });
+
+      // listen to all Core Events
+      playerManager.addEventListener(cast.framework.events.category.CORE,
         event => {
-            console.log("EVENT: "+event);
-        });
-
-        playerManager.setMessageInterceptor(
-          cast.framework.messages.MessageType.LOAD,
-          request => {
-            console.log('LOAD MESS REQUEST MEDIA CONTENTID: '+request.media.contentId);
-            return request;
-          }
-        );
-        playerManager.setMessageInterceptor(
-          cast.framework.messages.MessageType.QUEUE_LOAD,
-          request => {
-            console.log('QUEUE LOAD REQUEST ITEMS: ', request.items);
-            return request;
-          }
-        );
-
-      playerManager.addEventListener(
-        cast.framework.events.EventType.PLAYER_LOAD_COMPLETE, () => {
-        const audioTracksManager = playerManager.getAudioTracksManager();
-        const textTracksManager = playerManager.getTextTracksManager();
-
-        // Get all audio tracks
-        const audioTracks = audioTracksManager.getTracks();
-
-        // Get all text tracks
-        const textTracks = textTracksManager.getTracks();
-
-        // Choose the first audio track to be active by specifying its ID
-        console.log("AUDIO TRACK tracks[0].trackId"+audioTracks[0].trackId);
-        audioTracksManager.setActiveById(audioTracks[0].trackId);
-
-        // Choose the first text track to be active by its ID
-        console.log("TEXT TRACK tracks[0].trackId"+textTracks[0].trackId);
-        textTracksManager.setActiveByIds([textTracks[0].trackId]);
-      });
-
-
-      // Sets the player to start playback as soon as there are five seconds of
-      // media contents buffered. Default is 10.
-      playbackConfig.autoResumeDuration = 5;
-
-      playerManager.setMessageInterceptor(
-        cast.framework.messages.MessageType.LOAD,
-        request => {
-          console.log('!!!Request.media.contentId!!!: '+request.media.contentId);
-          console.log('!!!Request.media.contentId!!!: '+request.media.contentUrl);
-          return request;
-        }
-      );
-      playerManager.setMessageInterceptor(
-        cast.framework.messages.MessageType.QUEUE_LOAD,
-        request => {
-          console.log('QUEUE LOAD', request.items);
-          return request;
-        }
-      );
-      /*
-      playerManager.setMessageInterceptor(
-        cast.framework.messages.MessageType.QUEUE_INSERT,
-        request => {
-          console.log('QUEUE INSERT', request);
-          return request;
-        } 
-      );
-      playerManager.setMessageInterceptor(
-        cast.framework.messages.MessageType.QUEUE_UPDATE,
-        request => {
-          console.log('QUEUE UPDATE', request);
-          return request;
-        } 
-      );
-      playerManager.setMessageInterceptor(
-        cast.framework.messages.MessageType.QUEUE_CHANGE,
-        request => {
-          console.log('QUEUE CHANGE', request);
-          return request;
-        } 
-      );
-      */
-
-
-      // Creates a simple queue with a combination of contents.
-      const DemoQueue = class extends cast.framework.QueueBase {
-      constructor() {
-        super();
-
-          /** @private @const {!cast.framework.QueueManager} */
-          this.queueManager_ = context.getPlayerManager().getQueueManager();
-
-          /**
-            * List of media urls.
-            * @private @const {!Array<string>}
-          */
-        //this.myMediaUrls_ = [];
-
-              
-        this.myMediaUrls_ = ['https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/ElephantsDream.m3u8',
-        'https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/DesigningForGoogleCast.m3u8',
-        'https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/GoogleIO-2014-CastingToTheFuture.m3u8',
-        'https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/GoogleIO-2014-MakingGoogleCastReadyAppsDiscoverable.m3u8',
-        'https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/BigBuckBunny.m3u8'];
-
-      }
-      /**
-        * Provide a list of items.
-        * @param {!cast.framework.messages.LoadRequestData} loadRequestData
-        * @return {!cast.framework.messages.QueueData}
-        */
-      initialize(loadRequestData) {
-        const items = [];
-        for (const mediaUrl of this.myMediaUrls_) {
-          const item = new cast.framework.messages.QueueItem();
-          item.media = new cast.framework.messages.MediaInformation();
-          item.media.contentId = mediaUrl;
-          items.push(item);
-        }
-
-        const customDataJSON = loadRequestData.customData;
-        console.log('!!!customDataJSON.manifestUrl: '+customDataJSON.manifestUrl);
-        console.log('!!!customDataJSON.typ: '+customDataJSON.type);
-        console.log('!!!customDataJSON.mediaSelfLink: '+customDataJSON.mediaSelfLink);
-        console.log('!!!customDataJSON.audioLanguage: '+customDataJSON.audioLanguage);
-        console.log('!!!customDataJSON.subtitlesUrl: '+customDataJSON.subtitlesUrl);
-        const drm = customDataJSON.entitlement.DRM;
-        console.log('!!!DRM ContentId: '+drm.ContentId);
-        console.log('!!!DRM Href: '+drm.Cookie.Href);
-
-        playbackConfig.licenseUrl = drm.Cookie.Href;
-        playbackConfig.licenseRequestHandler = requestInfo => {
-        requestInfo.withCredentials = true;
-        };
-
-
-        // Update playback config licenseUrl according to provided value in load request.
-        context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackConfig) => {
-        //if (loadRequest.media.customData && loadRequest.media.customData.licenseUrl) {
-          playbackConfig.licenseUrl = drm.Cookie.Href;
-        // }
-        return playbackConfig;
+            console.log(event);
         });
 
 
 
-
-
-
-
-
-        const activeTracksids = loadRequestData.activeTrackIds;
-
-        const mediaLoaded = loadRequestData.media;
-        console.log('!!!mediaLoaded.textTrackStyle: '+mediaLoaded.textTrackStyle);
-        console.log('!!!mediaLoaded.tracks: '+mediaLoaded.tracks);
-
-        const tracks = mediaLoaded.tracks;
-
-        console.log('!!!mediaLoaded.streamType: '+mediaLoaded.streamType);
-        console.log('!!!mediaLoaded.contentUrl: '+mediaLoaded.contentUrl);
-        console.log('!!!mediaLoaded.contentId: '+mediaLoaded.contentId);
-        console.log('!!!mediaLoaded.contentType: '+mediaLoaded.contentType);
-        console.log('!!!mediaLoaded.customdData: '+mediaLoaded.customdData);
-
-        const queueData = loadRequestData.queueData || new cast.framework.messages.QueueData();
-        queueData.name = 'Your Queue Name';
-        queueData.description = 'Your Queue Description';
-        
-        // queueData.items = items;
-        
-        // Start with the first item in the playlist.
-        queueData.startIndex = 0;
-        // Start from 10 seconds into the first item.
-        queueData.currentTime = 10;
-        return queueData;
-        }
-
-        /** Inserts items to the queue. */
-        onSomeEventTriggeringInsertionToQueue() {
-          const twoMoreUrls = ['https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/BigBuckBunny.m3u8',
- 'https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/ElephantsDream.m3u8'];
-          const items = [];
-          for (const mediaUrl of twoMoreUrls) {
-            const item = new cast.framework.QueueItem();
-            item.media = new cast.framework.messages.MediaInformation();
-            item.media.contentId = mediaUrl;
-            items.push(item);
-          }
-          // Insert two more items after the current playing item.
-          const allItems = this.queueManager_.getItems();
-          const currentItem = this.queueManager_.getCurrentItem();
-          const nextItemIndex = allItems.indexOf(currentItem) + 1;
-          const insertBefore = (nextItemIndex < allItems.length) ?
-              allItems[nextItemIndex].itemId :
-              undefined;
-          this.queueManager_.insertItems(items, insertBefore);
-        }
-
-        /** Removes a particular item from the queue. */
-        onSomeEventTriggeringRemovalFromQueue() {
-          this.queueManager_.removeItems([2]);
-        }
-
-      };
-
-      const myCastQueue = new DemoQueue();
-      //myCastQueue.onSomeEventTriggeringInsertionToQueue();
-
-      const CUSTOM_CHANNEL = 'urn:x-cast:com.example.cast.mynamespace';
-      context.addCustomMessageListener(CUSTOM_CHANNEL, function(customEvent) {
- 
-      });
-
-    
-
-      context.start({playbackConfig: playbackConfig, queue: myCastQueue });
+      context.start({playbackConfig: playbackConfig});
 
     </script>
   </body>
