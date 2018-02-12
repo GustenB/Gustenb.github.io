@@ -79,20 +79,22 @@
         requestInfo.withCredentials = true;
       };
 
-      // Update playback config licenseUrl according to provided value in load request.
-      context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackConfig) => {
-        console.log("SetMediaPlaybackInfoHandler");
-      if (loadRequest.media.customData && loadRequest.media.customData.licenseUrl) {
-        playbackConfig.licenseUrl = loadRequest.media.customData.licenseUrl;
-      }
-      return playbackConfig;
-      });
+ 
 
 
 
       const myCastQueue = new MyCastQueue(); // create instance of queue Object
   
       context.start({queue: myCastQueue, playbackConfig: playbackConfig});
+
+           // Update playback config licenseUrl according to provided value in load request.
+           context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackConfig) => {
+        console.log("SetMediaPlaybackInfoHandler");
+      if (loadRequest.media.customData && loadRequest.media.customData.licenseUrl) {
+        playbackConfig.licenseUrl = loadRequest.media.customData.licenseUrl;
+      }
+      return playbackConfig;
+      });
 
     </script>
   </body>
