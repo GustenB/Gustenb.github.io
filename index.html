@@ -27,6 +27,8 @@
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
 
+      console.log("--- Initialize ---");  
+
 
       playbackConfig.licenseUrl = 'http://widevine/yourLicenseServer';
       playbackConfig.licenseRequestHandler = requestInfo => {
