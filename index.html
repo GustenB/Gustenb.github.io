@@ -30,10 +30,13 @@
       console.log("--- Initialize ---");
       
       playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, loadRequestData => {
-      console.log("--- MessageInterceptor ---");
+      console.log("--- MessageInterceptor 1 ---");
       if (loadRequestData.media && loadRequestData.media.entity) {
-        return thirdparty.getMediaById(loadRequestData.media.entity, loadRequestData.credentials)
-        .then(media => {
+        console.log("--- MessageInterceptor 2 ---");
+        return thirdparty
+            .getMediaById(
+                loadRequestData.media.entity, loadRequestData.credentials)
+            .then(media => {
               if (media) {
                 loadRequestData.media.contentId = media.url;
                 loadRequestData.media.contentType = media.contentType;
@@ -41,69 +44,11 @@
               }
               return loadRequestData;
             });
-        }
+      }
       return loadRequestData;
       });
 
-      playbackConfig.licenseUrl = 'http://widevine/yourLicenseServer';
-      playbackConfig.licenseRequestHandler = requestInfo => {
-        requestInfo.withCredentials = true;
-      };
-      
-
-      // Update playback config licenseUrl according to provided value in load request.
-      context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackConfig) => {
-      console.log("Incoming");   
-      if (loadRequest.media.customData && loadRequest.media.customData.licenseUrl) {
-          playbackConfig.licenseUrl = loadRequest.media.customData.licenseUrl;
-      }
-        return playbackConfig;
-      });
-
-      
-
-
-            /**
-        * Provide a list of items.
-        * @param {!cast.framework.messages.LoadRequestData} loadRequestData
-        * @return {!cast.framework.messages.QueueData}
-        */
-        initialize(loadRequestData) {
-        const items = [];
-        for (const mediaUrl of this.myMediaUrls_) {
-          const item = new cast.framework.messages.QueueItem();
-          item.media = new cast.framework.messages.MediaInformation();
-          item.media.contentId = mediaUrl;
-          items.push(item);
-        }
-
-        const customDataJSON = loadRequestData.customData;
-        console.log('!!!customDataJSON.manifestUrl: '+customDataJSON.manifestUrl);
-        console.log('!!!customDataJSON.typ: '+customDataJSON.type);
-        console.log('!!!customDataJSON.mediaSelfLink: '+customDataJSON.mediaSelfLink);
-        console.log('!!!customDataJSON.audioLanguage: '+customDataJSON.audioLanguage);
-        console.log('!!!customDataJSON.subtitlesUrl: '+customDataJSON.subtitlesUrl);
-        const drm = customDataJSON.entitlement.DRM;
-        console.log('!!!DRM ContentId: '+drm.ContentId);
-        console.log('!!!DRM Href: '+drm.Cookie.Href);
-
-        const activeTracksids = loadRequestData.activeTrackIds;
-
-        const mediaLoaded = loadRequestData.media;
-        console.log('!!!mediaLoaded.textTrackStyle: '+mediaLoaded.textTrackStyle);
-        console.log('!!!mediaLoaded.tracks: '+mediaLoaded.tracks);
-
-        const tracks = mediaLoaded.tracks;
-
-        console.log('!!!mediaLoaded.streamType: '+mediaLoaded.streamType);
-        console.log('!!!mediaLoaded.contentUrl: '+mediaLoaded.contentUrl);
-        console.log('!!!mediaLoaded.contentId: '+mediaLoaded.contentId);
-        console.log('!!!mediaLoaded.contentType: '+mediaLoaded.contentType);
-        console.log('!!!mediaLoaded.customdData: '+mediaLoaded.customdData);
-
-        }
-
-        context.start({playbackConfig: playbackConfig});
+      context.start({playbackConfig: playbackConfig});
 
     </script>
   </body>
