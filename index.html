@@ -48,7 +48,21 @@
       return loadRequestData;
       });
 
-      context.start({playbackConfig: playbackConfig});
+
+      const MyRequestData = class extends cast.framework.messages.RequestData {
+        initialize(loadRequestData) {
+            const media = loadRequestData.media;
+            
+            console.log("--- loadRequestData ---");
+
+        }
+
+    };
+
+    const myRequestData = new MyRequestData(); // create instance of queue Object
+
+
+    context.start({playbackConfig: playbackConfig});
 
     </script>
   </body>
