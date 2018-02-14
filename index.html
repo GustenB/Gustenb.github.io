@@ -27,7 +27,7 @@
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
 
-      console.log("--- Initialize test 12 ---");
+      console.log("--- Initialize test 13 ---");
       
       playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, loadRequestData => {
       console.log("--- MessageInterceptor 1 ---");
@@ -48,9 +48,11 @@
       // console.log("--- LoadRequestData media contentType: "+loadRequestData.media.contentType);
 
       playbackConfig.licenseUrl = loadRequestData.customData.entitlement.DRM.Cookie.Href
+      playbackConfig.protectionSystem = "WIDEVINE";
+      console.log("--- MessageInterceptor 2 ---");
 
       if (loadRequestData.media && loadRequestData.media.entity) {
-        console.log("--- MessageInterceptor 2 ---");
+        console.log("--- MessageInterceptor 3 ---");
 
         return thirdparty
             .getMediaById(
