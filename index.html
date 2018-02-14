@@ -30,7 +30,7 @@
       const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
 
-      console.log("--- Initialize test 16 ---");
+      console.log("--- Initialize test 17 ---");
 
       castReceiverOptions.useLegacyDashSupport = true;
       
@@ -43,9 +43,10 @@
       console.log("--- LoadRequestData customData: "+loadRequestData.customData);
       console.log("--- LoadRequestData customData manifestUrl: "+loadRequestData.customData.manifestUrl);
       console.log("--- LoadRequestData customData type: "+loadRequestData.customData.type);
+      if(loadRequestData.customData.type === "feature"){
+        console.log("--- LoadRequestData customData entitlement DRM Cookie Href: "+loadRequestData.customData.entitlement.DRM.Cookie.Href);
+      }
       console.log("--- LoadRequestData customData mediaSelfLink: "+loadRequestData.customData.mediaSelfLink);
-      console.log("--- LoadRequestData customData entitlement DRM Cookie Href: "+loadRequestData.customData.entitlement.DRM.Cookie.Href);
-
       console.log("--- LoadRequestData media contentUrl: "+loadRequestData.media.contentUrl);
       console.log("--- LoadRequestData media contentId: "+loadRequestData.media.contentId);
       console.log("--- LoadRequestData media contentType: "+loadRequestData.media.contentType);
