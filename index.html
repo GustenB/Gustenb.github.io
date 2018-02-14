@@ -27,7 +27,7 @@
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
 
-      console.log("--- Initialize test 9 ---");
+      console.log("--- Initialize test 10 ---");
       
       playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, loadRequestData => {
       console.log("--- MessageInterceptor 1 ---");
@@ -36,6 +36,9 @@
       console.log("--- LoadRequestData credentials: "+loadRequestData.credentials);
       console.log("--- LoadRequestData credentialsType: "+loadRequestData.credentialsType);
       console.log("--- LoadRequestData customData: "+loadRequestData.customData);
+      console.log("--- LoadRequestData customData manifestUrl: "+loadRequestData.customData.manifestUrl);
+      console.log("--- LoadRequestData customData type: "+loadRequestData.customData.type);
+      console.log("--- LoadRequestData customData mediaSelfLink: "+loadRequestData.customData.mediaSelfLink);
 
       console.log("--- LoadRequestData media contentUrl: "+loadRequestData.media.contentUrl);
       console.log("--- LoadRequestData media contentId: "+loadRequestData.media.contentId);
