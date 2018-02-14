@@ -30,7 +30,7 @@
       const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
 
-      console.log("--- Initialize test 14 ---");
+      console.log("--- Initialize test 15 ---");
 
       castReceiverOptions.useLegacyDashSupport = true;
       
@@ -54,6 +54,7 @@
 
       playbackConfig.licenseUrl = loadRequestData.customData.entitlement.DRM.Cookie.Href
       playbackConfig.protectionSystem = "WIDEVINE";
+      playbackConfig.LoggerLevel = "DEBUG";
       console.log("--- MessageInterceptor 2 ---");
 
       if (loadRequestData.media && loadRequestData.media.entity) {
