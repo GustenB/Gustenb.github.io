@@ -26,8 +26,13 @@
       const context = cast.framework.CastReceiverContext.getInstance();
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
+      const networkRequest = new cast.framework.NetworkRequestInfo();
+      const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
-      console.log("--- Initialize test 13 ---");
+
+      console.log("--- Initialize test 14 ---");
+
+      castReceiverOptions.useLegacyDashSupport = true;
       
       playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, loadRequestData => {
       console.log("--- MessageInterceptor 1 ---");
