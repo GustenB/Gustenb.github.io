@@ -27,12 +27,15 @@
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
 
-      console.log("--- Initialize ---");
+      console.log("--- Initialize test 1 ---");
       
       playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, loadRequestData => {
       console.log("--- MessageInterceptor 1 ---");
+      console.log("--- CustomData: "+loadRequestData.media.customData);
+
       if (loadRequestData.media && loadRequestData.media.entity) {
         console.log("--- MessageInterceptor 2 ---");
+
         return thirdparty
             .getMediaById(
                 loadRequestData.media.entity, loadRequestData.credentials)
@@ -46,6 +49,20 @@
             });
       }
       return loadRequestData;
+      });
+
+
+      playbackConfig.licenseRequestHandler = requestInfo => {
+        requestInfo.withCredentials = true;
+      };
+
+
+      // Update playback config licenseUrl according to provided value in load request.
+      context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackConfig) => {
+        if (loadRequest.media.customData && loadRequest.media.customData.licenseUrl) {
+          playbackConfig.licenseUrl = loadRequest.media.customData.licenseUrl;
+        }
+      return playbackConfig;
       });
 
       context.start({playbackConfig: playbackConfig});
