@@ -27,11 +27,11 @@
       const playerManager = context.getPlayerManager();
       const playbackConfig = new cast.framework.PlaybackConfig();
 
-      console.log("--- Initialize test 1 ---");
+      console.log("--- Initialize test 2 ---");
       
       playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, loadRequestData => {
       console.log("--- MessageInterceptor 1 ---");
-      console.log("--- CustomData: "+loadRequestData.media.customData);
+      console.log("--- CustomData type: "+loadRequestData.media.customdata.type);
 
       if (loadRequestData.media && loadRequestData.media.entity) {
         console.log("--- MessageInterceptor 2 ---");
