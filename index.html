@@ -30,7 +30,7 @@
       const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
 
-      console.log("--- Initialize test 18 ---");
+      console.log("--- Initialize test 19 ---");
 
       castReceiverOptions.useLegacyDashSupport = true;
       
@@ -45,7 +45,17 @@
       console.log("--- LoadRequestData customData type: "+loadRequestData.customData.type);
       if(loadRequestData.customData.type === "feature"){
         console.log("--- LoadRequestData customData entitlement DRM Cookie Href: "+loadRequestData.customData.entitlement.DRM.Cookie.Href);
-        playbackConfig.licenseUrl = loadRequestData.customData.entitlement.DRM.Cookie.Href
+        console.log("--- LoadRequestData customData entitlement DRM CustomerToken: "+loadRequestData.customData.entitlement.DRM.CustomerToken);
+        const customerToken = loadRequestData.customData.entitlement.DRM.CustomerToken;
+        console.log("--- LoadRequestData customData entitlement DRM DeviceToken: "+loadRequestData.customData.entitlement.DRM.DeviceToken);
+        const deviceToken = loadRequestData.customData.entitlement.DRM.DeviceToken;
+        console.log("--- LoadRequestData customData entitlement DRM Kid: "+loadRequestData.customData.entitlement.DRM.Kid);
+        const kid = loadRequestData.customData.entitlement.DRM.Kid;
+
+        const licensUrl = "http://rightsmanager.sfanytime.com/rightsmanager/WidevineLicenser.svc/Licenser?kid="+kid+"&customerToken="+customerToken+"&deviceToken="+deviceToken;
+        console.log("--- licensUrl ----; "+licensUrl);
+
+        playbackConfig.licenseUrl = licensUrl;
         playbackConfig.protectionSystem = "WIDEVINE";
       }
       console.log("--- LoadRequestData customData mediaSelfLink: "+loadRequestData.customData.mediaSelfLink);
