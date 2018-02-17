@@ -30,7 +30,7 @@
       const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
 
-      console.log("--- Initialize test 20 ---");
+      console.log("--- Initialize test 21 ---");
 
       castReceiverOptions.useLegacyDashSupport = true;
       
@@ -57,6 +57,33 @@
 
         playbackConfig.licenseUrl = licensUrl;
         playbackConfig.protectionSystem = "WIDEVINE";
+        playbackConfig.licenseRequestHandler = (requestInfo) => {
+          requestInfo.withCredentials = false;
+        };
+        
+        playbackConfig.licenseHandler = (arr) => {                                          
+        // Convert uint8array to string and parse json
+        let jsonMsg = Uint8ArrayUtils.toString(arr);
+        console.log("--- licenseRequestHandler jsonMsg: "+jsonMsg);
+        
+        let licenseResponse = JSON.parse(jsonMsg);
+        console.log("--- LicenseResponse: "+licenseResponse);
+
+        let status = licenseResponse.WidevineDrmLicense.status;
+        let license = licenseResponse.WidevineDrmLicense.license;
+        let securitylevel = licenseResponse.WidevineDrmLicense.securityLevel;
+        console.log("--- LicenseResponse: status: "+status);
+        console.log("--- LicenseResponse: license: "+license);
+        console.log("--- LicenseResponse: securitylevel: "+securitylevel);
+                
+        // Return Uint8Array from the license in the json
+        let uint8Arraylicense = Uint8ArrayUtils.fromBase64(licenseResponse.WidevineDrmLicense.license);
+        console.log("--- Return Uint8Array from the license in the json: "+uint8Arraylicense);
+        
+        return  uint8Arraylicense;
+      };
+
+
       }
       console.log("--- LoadRequestData customData mediaSelfLink: "+loadRequestData.customData.mediaSelfLink);
       console.log("--- LoadRequestData media contentUrl: "+loadRequestData.media.contentUrl);
@@ -86,34 +113,6 @@
       }
       return loadRequestData;
       });
-
-      playbackConfig.licenseRequestHandler = (requestInfo) => {
-        console.log("--- licenseRequestHandler requestInfo: ");
-        // requestInfo.withCredentials = true;
-      };
-
-
-      playbackConfig.licenseHandler = (arr) => {                                          
-        // Convert uint8array to string and parse json
-        let jsonMsg = Uint8ArrayUtils.toString(arr);
-        console.log("--- licenseRequestHandler jsonMsg: "+jsonMsg);
-        
-        let licenseResponse = JSON.parse(jsonMsg);
-        console.log("--- LicenseResponse: "+licenseResponse);
-
-        let status = licenseResponse.WidevineDrmLicense.status;
-        let license = licenseResponse.WidevineDrmLicense.license;
-        let securitylevel = licenseResponse.WidevineDrmLicense.securityLevel;
-        console.log("--- LicenseResponse: status: "+status);
-        console.log("--- LicenseResponse: license: "+license);
-        console.log("--- LicenseResponse: securitylevel: "+securitylevel);
-                
-        // Return Uint8Array from the license in the json
-        let uint8Arraylicense = Uint8ArrayUtils.fromBase64(licenseResponse.WidevineDrmLicense.license);
-        console.log("--- Return Uint8Array from the license in the json: "+uint8Arraylicense);
-        
-        return  uint8Arraylicense;
-      };
 
 
       context.start({playbackConfig: playbackConfig});
