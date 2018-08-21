@@ -30,7 +30,7 @@
       const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
 
-      console.log("--- Initialize test 25 ---");
+      console.log("--- Initialize test 26 ---");
 
       castReceiverOptions.useLegacyDashSupport = true;
       
@@ -47,15 +47,15 @@
       
       // if(loadRequestData.customData.type === "feature"){
 
-        const licensUrl = loadRequestData.customData.licenseUrl;
-        console.log("--- licensUrl ----; "+licensUrl);
+        const licenseUrl = loadRequestData.customData.licenseUrl;
+        console.log("--- licensUrl ----; "+licenseUrl);
 
-        playbackConfig.licenseUrl = licensUrl;
+        playbackConfig.licenseUrl = licenseUrl;
         playbackConfig.protectionSystem = "WIDEVINE";
         playbackConfig.licenseRequestHandler = (requestInfo) => {
           requestInfo.withCredentials = false;
         };
-        
+
         playbackConfig.licenseHandler = (arr) => {                                          
         // Convert uint8array to string and parse json
         let jsonMsg = Uint8ArrayUtils.toString(arr);
@@ -77,6 +77,15 @@
         
         return  uint8Arraylicense;
       };
+
+        context.getPlayerManager().setMediaPlaybackInfoHandler((loadRequest, playbackConfig) => {
+        if (loadRequest.media.customData && loadRequest.media.customData.licenseUrl) {
+          playbackConfig.licenseUrl = loadRequest.media.customData.licenseUrl;
+        }
+        return playbackConfig;
+        });
+        
+
 //}
       
       console.log("--- LoadRequestData customData mediaSelfLink: "+loadRequestData.customData.mediaSelfLink);
