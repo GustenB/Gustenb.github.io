@@ -30,7 +30,7 @@
       const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
 
-      console.log("--- Initialize test 24 ---");
+      console.log("--- Initialize test 25 ---");
 
       castReceiverOptions.useLegacyDashSupport = true;
       
@@ -46,13 +46,6 @@
       console.log("--- LoadRequestData customData type: "+loadRequestData.customData.type);
       
       // if(loadRequestData.customData.type === "feature"){
-        console.log("--- LoadRequestData customData entitlement DRM Cookie Href: "+loadRequestData.customData.entitlement.DRM.Cookie.Href);
-        console.log("--- LoadRequestData customData entitlement DRM CustomerToken: "+loadRequestData.customData.entitlement.DRM.CustomerToken);
-        const customerToken = loadRequestData.customData.entitlement.DRM.CustomerToken;
-        console.log("--- LoadRequestData customData entitlement DRM DeviceToken: "+loadRequestData.customData.entitlement.DRM.DeviceToken);
-        const deviceToken = loadRequestData.customData.entitlement.DRM.DeviceToken;
-        console.log("--- LoadRequestData customData entitlement DRM Kid: "+loadRequestData.customData.entitlement.DRM.Kid);
-        const kid = loadRequestData.customData.entitlement.DRM.Kid;
 
         const licensUrl = loadRequestData.customData.licenseUrl;
         console.log("--- licensUrl ----; "+licensUrl);
