@@ -42,6 +42,7 @@
       console.log("--- LoadRequestData credentialsType: "+loadRequestData.credentialsType);
       console.log("--- LoadRequestData customData: "+loadRequestData.customData);
       console.log("--- LoadRequestData customData manifestUrl: "+loadRequestData.customData.manifestUrl);
+      console.log("--- LoadRequestData customData licenseUrl: "+loadRequestData.customData.lisenceUrl);
       console.log("--- LoadRequestData customData type: "+loadRequestData.customData.type);
       if(loadRequestData.customData.type === "feature"){
         console.log("--- LoadRequestData customData entitlement DRM Cookie Href: "+loadRequestData.customData.entitlement.DRM.Cookie.Href);
@@ -52,7 +53,7 @@
         console.log("--- LoadRequestData customData entitlement DRM Kid: "+loadRequestData.customData.entitlement.DRM.Kid);
         const kid = loadRequestData.customData.entitlement.DRM.Kid;
 
-        const licensUrl = "http://rightsmanager.sfanytime.com/rightsmanager/WidevineLicenser.svc/Licenser?kid="+kid+"&customerToken="+customerToken+"&deviceToken="+deviceToken;
+        const licensUrl = loadRequestData.customData.lisenceUrl;
         console.log("--- licensUrl ----; "+licensUrl);
 
         playbackConfig.licenseUrl = licensUrl;
