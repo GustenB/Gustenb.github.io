@@ -30,7 +30,7 @@
       const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
 
-      console.log("--- Initialize test 29 ---");
+      console.log("--- Initialize test 30 ---");
 
       castReceiverOptions.useLegacyDashSupport = true;
       
@@ -84,8 +84,6 @@
         });
         
 
-//}
-      
       console.log("--- LoadRequestData media contentUrl: "+loadRequestData.media.contentUrl);
       console.log("--- LoadRequestData media contentId: "+loadRequestData.media.contentId);
       console.log("--- LoadRequestData media contentType: "+loadRequestData.media.contentType);
@@ -94,25 +92,12 @@
 
       playbackConfig.LoggerLevel = "DEBUG";
 
+
       console.log("--- MessageInterceptor 2 ---");
 
-      if (loadRequestData.media && loadRequestData.media.entity) {
-        console.log("--- MessageInterceptor 3 ---");
-
-        return thirdparty
-            .getMediaById(
-                loadRequestData.media.entity, loadRequestData.credentials)
-            .then(media => {
-              if (media) {
-                loadRequestData.media.contentId = media.url;
-                loadRequestData.media.contentType = media.contentType;
-                loadRequestData.media.metadata = media.metadata;
-              }
-              return loadRequestData;
-            });
-      }
       return loadRequestData;
       });
+    
 
 
       context.start({playbackConfig: playbackConfig});
