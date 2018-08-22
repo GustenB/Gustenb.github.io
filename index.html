@@ -30,7 +30,7 @@
       const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
 
-      console.log("--- Initialize test 26 ---");
+      console.log("--- Initialize test 27 ---");
 
       castReceiverOptions.useLegacyDashSupport = true;
       
@@ -38,12 +38,10 @@
       console.log("--- MessageInterceptor 1 ---");
       // console.log("--- LoadRequestData type: "+loadRequestData.customdata.type);
 
-      console.log("--- LoadRequestData credentials: "+loadRequestData.credentials);
-      console.log("--- LoadRequestData credentialsType: "+loadRequestData.credentialsType);
       console.log("--- LoadRequestData customData: "+loadRequestData.customData);
-      console.log("--- LoadRequestData customData manifestUrl: "+loadRequestData.customData.manifestUrl);
+      console.log("--- LoadRequestData  contentId: "+loadRequestData.media.contentId);
       console.log("--- LoadRequestData customData licenseUrl: "+loadRequestData.customData.licenseUrl);
-      console.log("--- LoadRequestData customData type: "+loadRequestData.customData.type);
+      // console.log("--- LoadRequestData customData type: "+loadRequestData.customData.type);
       
       // if(loadRequestData.customData.type === "feature"){
 
