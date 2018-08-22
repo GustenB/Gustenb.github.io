@@ -30,7 +30,7 @@
       const castReceiverOptions = new cast.framework.CastReceiverOptions();
 
 
-      console.log("--- Initialize test 27 ---");
+      console.log("--- Initialize test 28 ---");
 
       castReceiverOptions.useLegacyDashSupport = true;
       
@@ -40,12 +40,12 @@
 
       console.log("--- LoadRequestData customData: "+loadRequestData.customData);
       console.log("--- LoadRequestData  contentId: "+loadRequestData.media.contentId);
-      console.log("--- LoadRequestData customData licenseUrl: "+loadRequestData.customData.licenseUrl);
+      console.log("--- LoadRequestData customData licenseUrl: "+loadRequestData.media.customData.licenseUrl);
       // console.log("--- LoadRequestData customData type: "+loadRequestData.customData.type);
       
       // if(loadRequestData.customData.type === "feature"){
 
-        const licenseUrl = loadRequestData.customData.licenseUrl;
+        const licenseUrl = loadRequestData.media.customData.licenseUrl;
         console.log("--- licensUrl ----; "+licenseUrl);
 
         playbackConfig.licenseUrl = licenseUrl;
